@@ -9,6 +9,7 @@ class dataloop_agent(
   $deregister_onstop = false,
   $tags = false,
   $agent_name = false,
+  $service_enabled = true,
   ) inherits ::dataloop_agent::repo {
 
   contain ::dataloop_agent::repo
@@ -34,11 +35,13 @@ class dataloop_agent(
         install_options => $install_opts,
         require         => [ Exec['apt_update'], Apt::Source['dataloop'] ],
       }
-      service { 'dataloop-agent':
-        ensure     => running,
-        enable     => true,
-        hasstatus  => true,
-        hasrestart => true,
+      if ! $service_enabled {
+        service { 'dataloop-agent':
+          ensure     => running,
+          enable     => true,
+          hasstatus  => true,
+          hasrestart => true,
+        }
       }
     }
     default: {
