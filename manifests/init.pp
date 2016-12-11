@@ -23,7 +23,6 @@ class dataloop_agent(
         install_options => $install_opts,
         require         => Class['dataloop_agent::repo'],
       }
-      ->
       if ! $service_enabled {     
         service { 'dataloop-agent':
           ensure => running,
@@ -38,7 +37,6 @@ class dataloop_agent(
         install_options => $install_opts,
         require         => [ Exec['apt_update'], Apt::Source['dataloop'] ],
       }
-      ->
       if ! $service_enabled {
         service { 'dataloop-agent':
           ensure     => running,
